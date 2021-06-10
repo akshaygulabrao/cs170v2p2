@@ -4,8 +4,9 @@ import pandas as pd
 
 # parse text file into pandas dataframe
 
-f = ['cs_170_small80.txt', 'cs_170_large_80.txt']
+f = ['cs_170_small80.txt', 'cs_170_large80.txt']
 global distance_matrix
+global subset_size
 global y
 distance_matrix = 0
 
@@ -35,6 +36,8 @@ class Classifier:
 
     def test(self, cols):
         global distance_matrix
+        global subset_size
+        subset_size = len(cols)
         x = self.x.loc[:, cols]
         x = np.array(x)
         distance_matrix = np.zeros((x.shape[0], x.shape[0]))
@@ -53,7 +56,8 @@ class Classifier:
 class Validator:
 
     def leave_one_out_validation(self):
-        if self.dist.shape[1] == 0:
+        global subset_size
+        if not subset_size:
             return len(np.unique(self.y)) ** -1
         # test the leave 1 out
         total = 0
@@ -72,54 +76,32 @@ class Validator:
         self.y = y
 
 
+print("Using given feature subset on small dataset:")
+start = time.time()
 c = Classifier(f[0])
-c.test([1, 3, 5])
+end = time.time()
+print("Parsing Data took", end - start, "seconds")
+start = time.time()
+c.test([3, 5, 7])
+end = time.time()
+print("Creating distance matrix took", end - start, "seconds")
+start = time.time()
 v = Validator()
 print(v.leave_one_out_validation())
+end = time.time()
+print("Leave-1-out validation took", end - start, "seconds")
 
-
-
-"""
-xc = x.copy()
-#forward selection 
-# start current_choice list
-def forward_selection(x):
-    current_choice=[([],test(x,[]))]
-    max_accuracy = current_choice[-1][1]
-    xcols = list(x.columns)
-    while len(xcols):
-    # main loop
-        feature_added_list = []
-        for i in xcols:
-            j = current_choice[-1][0]
-            j.append(i)
-            tmp = (list(j),test(x,list(j)),i)
-            print(tmp[0],tmp[1])
-            feature_added_list.append(tmp)
-            j.pop()
-        c = lambda a: feature_added_list[a][1]
-        index = max(range(len(feature_added_list)),key = c)
-        a = feature_added_list[index]
-        current_choice.append(a)
-        feature_added_list.clear()
-        xcols.remove(a[2])
-    final = lambda f : current_choice[f][1]
-    finalIndex = max(range(len(current_choice)),key = final)
-    b = current_choice[finalIndex]
-    return b[0],b[1]
-fname = "cs_170_small80.txt"
-x,y = parse_test(fname)
-print('Accuracy of small dataset using all features, time(seconds)')
-s = time.time()
-x = validator(x,y,np.arange(1,x.shape[1] + 1))
-e = time.time()
-print(x,',',e-s)
-fname = "cs_170_large80.txt"
-x,y = parse_test(fname)
-
-print('Accuracy of large dataset using all features , time(seconds)')
-s = time.time()
-x = validator(x,y,np.arange(1,x.shape[1] + 1))
-e = time.time()
-print(x,',',e-s)
-"""
+print("\nUsing given feature subset on large dataset")
+start = time.time()
+c = Classifier(f[1])
+end = time.time()
+print("Parsing data took", end - start, "seconds")
+start = time.time()
+c.test([1, 15, 27])
+end = time.time()
+print("Creating distance matrix took", end - start, "seconds")
+start = time.time()
+v = Validator()
+print(v.leave_one_out_validation())
+end = time.time()
+print("Leave-1-out validation took", end - start, "seconds")

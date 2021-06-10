@@ -1,0 +1,34 @@
+Welcome to Akshay Gulabrao Feature Selection Algorithm
+
+Please enter total # of features
+
+Type the number of the algorithm you want to run
+1. Forward Selection
+2. Backward Elimination
+Using all features and a 'random' evaluation,  I get an accuracy of 18.3%
+
+Beginning search.
+
+Using feature(s) [0] accuracy is 31.7%
+Using feature(s) [1] accuracy is 12.6%
+Using feature(s) [2] accuracy is 48.0%
+Using feature(s) [3] accuracy is 37.9%
+
+Feature set [2] was best, accuracy is 48.0%
+
+Using feature(s) [2, 0] accuracy is 79.2%
+Using feature(s) [2, 1] accuracy is 0.5%
+Using feature(s) [2, 3] accuracy is 51.6%
+
+Feature set [2, 0] was best, accuracy is 79.2%
+
+Using feature(s) [2, 0, 1] accuracy is 0.9%
+Using feature(s) [2, 0, 3] accuracy is 86.2%
+
+Feature set [2, 0, 3] was best, accuracy is 86.2%
+
+Using feature(s) [2, 0, 3, 1] accuracy is 76.9%
+
+Feature set [2, 0, 3, 1] was best, accuracy is 76.9%
+
+Finished search!! The best feature subset is [2, 0, 3], which has an accuracy of  86.2%

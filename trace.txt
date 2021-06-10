@@ -1,0 +1,11 @@
+Using given feature subset on small dataset:
+Parsing Data took 0.004513978958129883 seconds
+Creating distance matrix took 0.07232069969177246 seconds
+0.89
+Leave-1-out validation took 0.0008025169372558594 seconds
+
+Using given feature subset on large dataset
+Parsing data took 0.023329734802246094 seconds
+Creating distance matrix took 7.145240783691406 seconds
+0.949
+Leave-1-out validation took 0.008623838424682617 seconds

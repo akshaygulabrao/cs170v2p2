@@ -11,6 +11,7 @@ def forward_selection(features):
     print("\nBeginning search.\n")
     feature_added_list = []
     for j in range(num_features):
+        # number of iterations of code that we must do
         for i in features:
             j = current_choice[-1][0]
             j.append(i)

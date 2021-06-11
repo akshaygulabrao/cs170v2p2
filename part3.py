@@ -30,25 +30,55 @@ class Classifier:
         distance_matrix = np.zeros((x.shape[0], x.shape[0]))
         for i in range(distance_matrix.shape[0]):
             for j in range(distance_matrix.shape[0]):
-                distance_matrix[i][j] = np.linalg.norm(x[i] - x[j])
-                if i == j:
-                    distance_matrix[i][j] = np.Inf
+                if i == j: distance_matrix[i][j] = np.Inf
+                elif distance_matrix[j][i] != 0:
+                    distance_matrix[i][j] = distance_matrix[j][i]
+                else: distance_matrix[i][j] = np.linalg.norm(x[i] - x[j])
         self.dist =  distance_matrix
 
     def forward_selection(self):
-        greedy_choice_list = [[]]
+        c.test([])
+        v = Validator(c.dist,[],self.y)
+        greedy_choice_list = [tuple(([], v.acc))]
         feature_list = np.arange(1, self.x.shape[1] + 1)
-        prospects = [greedy_choice_list[-1] + [i] for i in feature_list]
-        for i in range(len(prospects)):
-            c.test(prospects[i])
-            v = Validator(c.dist,prospects[i], self.y)
-            prospects[i] = tuple((prospects[i], v.acc))
-
-        c.test([3, 5, 7]); v = Validator(c.dist,[3, 5, 7],self.y); print(v.acc)
-        return 0
+        while feature_list.shape[0]:
+            prospects = [greedy_choice_list[-1][0] + [i] for i in feature_list]
+            for i in range(len(prospects)):
+                c.test(prospects[i])
+                v = Validator(c.dist, prospects[i], self.y)
+                prospects[i] = tuple((prospects[i], v.acc))
+                print(prospects[i])
+            greedy = lambda best : prospects[best][1]
+            greedy_index = max(range(len(prospects)), key = greedy)
+            feature_list = np.delete(feature_list, greedy_index)
+            greedy_choice_list.append(prospects[greedy_index])
+        final = lambda best : greedy_choice_list[best][1]
+        final_index = max(range(len(greedy_choice_list)),key = final)
+        return greedy_choice_list[final_index]
 
     def backward_elimination(self):
-        return 0
+        feature_list = np.arange(1,self.x.shape[1] + 1)
+        c.test(feature_list)
+        v = Validator(c.dist, feature_list, self.y)
+        greedy_choice_list = [tuple((feature_list, v.acc))]
+        while len(feature_list) > 0:
+            prospects = [np.delete(greedy_choice_list[-1][0][:],i) for i in range(len(feature_list))]
+            for i in range(len(prospects)):
+                c.test(prospects[i])
+                v = Validator(c.dist, prospects[i], self.y)
+                prospects[i] = tuple((prospects[i], v.acc))
+                print(prospects[i])
+            if len(prospects):
+                greedy = lambda best: prospects[best][1]
+                greedy_index = max(range(len(prospects)), key=greedy)
+                feature_list = prospects[greedy_index][0]
+                greedy_choice_list.append(prospects[greedy_index])
+        c.test([])
+        v = Validator(c.dist, [], self.y)
+        greedy_choice_list.append(([], v.acc))
+        final = lambda best: greedy_choice_list[best][1]
+        final_index = max(range(len(greedy_choice_list)), key=final)
+        return greedy_choice_list[final_index]
 
     def __init__(self, f_name):
         self.x, self.y = self.train(f_name)
@@ -68,7 +98,8 @@ class Validator:
             total += 1
         self.acc = correct / total
 
-
-c = Classifier(f[0])
-c.forward_selection()
+for i in f:
+    c = Classifier(i)
+    print(c.forward_selection())
+    print(c.backward_elimination())
 

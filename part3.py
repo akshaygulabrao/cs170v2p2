@@ -56,7 +56,7 @@ class Classifier:
             greedy = lambda best : prospects[best][1]
             greedy_index = max(range(len(prospects)), key = greedy)
             feature_list = np.delete(feature_list, greedy_index)
-            print("\nBest Choice: ", prospects[greedy_index])2
+            print("\nBest Choice: ", prospects[greedy_index])
             greedy_choice_list.append(prospects[greedy_index])
         final = lambda best : greedy_choice_list[best][1]
         final_index = max(range(len(greedy_choice_list)),key = final)

@@ -1,0 +1,60 @@
+  *-firmware
+       description: BIOS
+       vendor: Dell Inc.
+       physical id: 0
+       version: A22
+       date: 10/03/2019
+       size: 64KiB
+       capacity: 12MiB
+       capabilities: pci pnp upgrade shadowing cdboot bootselect edd int13floppy1200 int13floppy720 int13floppy2880 int5printscreen int9keyboard int14serial int17printer acpi usb smartbattery biosbootspecification netboot uefi
+  *-cache:0
+       description: L1 cache
+       physical id: 3e
+       slot: L1 Cache
+       size: 32KiB
+       capacity: 32KiB
+       capabilities: synchronous internal write-back instruction
+       configuration: level=1
+  *-cache:1
+       description: L2 cache
+       physical id: 43
+       slot: L2 Cache
+       size: 256KiB
+       capacity: 256KiB
+       capabilities: synchronous internal write-back unified
+       configuration: level=2
+  *-cache:2
+       description: L3 cache
+       physical id: 48
+       slot: L3 Cache
+       size: 4MiB
+       capacity: 4MiB
+       capabilities: synchronous internal write-back unified
+       configuration: level=3
+  *-cache
+       description: L1 cache
+       physical id: 39
+       slot: L1 Cache
+       size: 32KiB
+       capacity: 32KiB
+       capabilities: synchronous internal write-back data
+       configuration: level=1
+  *-memory
+       description: System Memory
+       physical id: 52
+       slot: System board or motherboard
+       size: 8GiB
+     *-bank:0
+          description: SODIMM DDR3 Synchronous 1600 MHz (0.6 ns)
+          product: HMT41GS6BFR8A-PB
+          vendor: Hynix/Hyundai
+          physical id: 0
+          serial: BC84EA9B
+          slot: DIMM A
+          size: 8GiB
+          width: 64 bits
+          clock: 1600MHz (0.6ns)
+     *-bank:1
+          description: DIMM [empty]
+          physical id: 1
+          slot: DIMM B

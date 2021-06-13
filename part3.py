@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import time
+from scipy.spatial import distance_matrix
 
 f = ['cs_170_small80.txt', 'cs_170_large80.txt','cs_170_small25.txt', 'cs_170_large25.txt']
 class Classifier:
@@ -46,6 +47,14 @@ class Classifier:
             for j in range(distance_matrix.shape[0]):
                 distance_matrix[i][j] = np.linalg.norm(x[i] - x[j])
         self.dist = distance_matrix
+    def scipy_test(self,cols):
+        x = self.x.loc[:, cols]
+        x = np.array(x)
+        self.dist = distance_matrix(x,x)
+        for i in range(self.dist.shape[0]):
+            self.dist[i,i] = np.Inf
+        # print(self.dist[0])
+
 
     def forward_selection(self):
         # we start with the empty list
@@ -116,20 +125,20 @@ class Validator:
             total += 1
         self.acc = correct / total
 
-c = Classifier(f[3])
-naive_test_time = []
-test_time = []
-for i in range(100):
-    start = time.thread_time()
-    c.test([])
-    end = time.thread_time()
-    test_time.append(end - start)
-    start = time.thread_time()
-    c.naive_test([])
-    end = time.thread_time()
-    naive_test_time.append(end - start)
-print(np.array(naive_test_time).mean(),np.array(test_time).mean())
-print(np.array(naive_test_time).std(),np.array(test_time).std())
+# c = Classifier(f[3])
+# naive_test_time = []
+# test_time = []
+# for i in range(1):
+#     start = time.thread_time()
+#     c.test([])
+#     end = time.thread_time()
+#     test_time.append(end - start)
+#     start = time.thread_time()
+#     c.scipy_test([])
+#     end = time.thread_time()
+#     naive_test_time.append(end - start)
+# print(np.array(naive_test_time).mean(),np.array(test_time).mean())
+# print(np.array(naive_test_time).std(),np.array(test_time).std())
 
 
 
@@ -152,16 +161,15 @@ print(np.array(naive_test_time).std(),np.array(test_time).std())
 # plt.legend()
 # plt.title("Large Personal Dataset")
 # plt.show()
-# c = Classifier(f[3])
-# print("Welcome to Akshay Gulabrao's Feature Selection Algorithm")
-# print(f)
-# index = int(input("type the index of the file you want to test"))
-# c = Classifier(f[index])
-# alg = int(input("1 : Forward Selection\n2 : Backward Elimination"))
-# if alg == 1:
-#     print(c.forward_selection())
-# else:
-#     print(c.backward_elimination())
-# print(c.backward_elimination())
+c = Classifier(f[3])
+print("Welcome to Akshay Gulabrao's Feature Selection Algorithm")
+print(f)
+index = int(input("type the index of the file you want to test"))
+c = Classifier(f[index])
+alg = int(input("1 : Forward Selection\n2 : Backward Elimination"))
+if alg == 1:
+    print(c.forward_selection())
+else:
+    print(c.backward_elimination())
 
 
